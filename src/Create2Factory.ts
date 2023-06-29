@@ -15,7 +15,7 @@ export class Create2Factory {
   static readonly deploymentGasLimit = 100000
   static readonly factoryDeploymentFee = (Create2Factory.deploymentGasPrice * Create2Factory.deploymentGasLimit).toString()
 
-  constructor (readonly provider: Provider,
+  constructor (readonly provider: Provider, readonly chainId: number,
     readonly signer = (provider as ethers.providers.JsonRpcProvider).getSigner()) {
   }
 
@@ -40,6 +40,7 @@ export class Create2Factory {
     }
 
     const deployTx = {
+      chainId: this.chainId,
       to: Create2Factory.contractAddress,
       data: this.getDeployTransactionCallData(initCode, salt)
     }
@@ -99,6 +100,7 @@ export class Create2Factory {
       return
     }
     await (signer ?? this.signer).sendTransaction({
+      chainId : this.chainId,
       to: Create2Factory.factoryDeployer,
       value: BigNumber.from(Create2Factory.factoryDeploymentFee)
     })

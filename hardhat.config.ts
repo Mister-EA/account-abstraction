@@ -8,6 +8,9 @@ import 'solidity-coverage'
 
 import * as fs from 'fs'
 
+const dotenv = require("dotenv");
+dotenv.config({path: __dirname + '/.env'});
+
 const mnemonicFileName = process.env.MNEMONIC_FILE ?? `${process.env.HOME}/.secret/testnet-mnemonic.txt`
 let mnemonic = 'test '.repeat(11) + 'junk'
 if (fs.existsSync(mnemonicFileName)) { mnemonic = fs.readFileSync(mnemonicFileName, 'ascii') }
@@ -54,7 +57,13 @@ const config: HardhatUserConfig = {
     localgeth: { url: 'http://localgeth:8545' },
     goerli: getNetwork('goerli'),
     proxy: getNetwork1('http://localhost:8545'),
-    kovan: getNetwork('kovan')
+    kovan: getNetwork('kovan'),
+    opbnbtestnet: {
+      url: "https://opbnb-testnet-rpc.bnbchain.org",
+      chainId: 5611,
+      gasPrice: 20000000000,
+      accounts: [process.env.PRIVATE_KEY!]
+    },
   },
   mocha: {
     timeout: 10000

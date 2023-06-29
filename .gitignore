@@ -18,3 +18,7 @@ artifacts
 .DS_Store
 /contracts/dist/
 /contracts/types/
+
+.env
+package-lock.json
+yarn.lock
